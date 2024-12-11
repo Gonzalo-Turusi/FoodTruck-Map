@@ -15,7 +15,7 @@ public class Security
 
     [Function("GenerateToken")]
     public async Task<HttpResponseData> Run(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "token")] HttpRequestData req)
+    [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "token")] HttpRequestData req)
     {
         try
         {

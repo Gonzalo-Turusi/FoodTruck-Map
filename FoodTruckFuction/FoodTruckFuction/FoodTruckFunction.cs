@@ -40,7 +40,6 @@ namespace FoodTruckFunction
         }
 
 
-
         [Function("GetFoodTrucks")]
         public async Task<HttpResponseData> Run(
         [HttpTrigger(AuthorizationLevel.Function, "get", Route = "foodtrucks")] HttpRequestData req)
