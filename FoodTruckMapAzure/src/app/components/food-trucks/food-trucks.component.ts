@@ -21,7 +21,17 @@ export class FoodTrucksComponent implements OnInit {
     this.foodTruckService.getFoodTrucks().subscribe({
       next: locations => {
         this.allFoodTruckLocations = locations;
-        this.visibleFoodTruckLocations = locations; // Mostrar todos inicialmente
+
+        const initialBounds = {
+          minLatitude: 37.5,
+          maxLatitude: 38.0,
+          minLongitude: -123.0,
+          maxLongitude: -122.0,
+          centerLatitude: 37.7749, // San Francisco
+          centerLongitude: -122.4194
+        };
+  
+        this.onBoundsChanged(initialBounds);
       },
       error: err => console.error('Failed to load food trucks', err)
     });
