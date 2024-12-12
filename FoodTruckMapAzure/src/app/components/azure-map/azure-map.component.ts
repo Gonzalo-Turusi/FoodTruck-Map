@@ -62,35 +62,45 @@ export class AzureMapComponent implements OnInit {
 
   private updateMarkers(): void {
     this.map.markers.clear();
-
+  
     this.foodTruckLocations.forEach(location => {
       const marker = new atlas.HtmlMarker({
         position: [location.longitude, location.latitude],
         color: 'red'
       });
-
+  
       this.map.markers.add(marker);
-
+  
       let isMouseOver = false;
       let closePopupTimeout: any;
-
+  
       this.map.events.add('mouseover', marker, () => {
         clearTimeout(closePopupTimeout);
         isMouseOver = true;
-
+  
+        // Crear el contenido del popup
+        const popupContent = `
+          <div style="max-width: 200px; max-height: 100px; overflow: hidden; text-overflow: ellipsis;">
+            <strong>${location.applicant}</strong><br>
+            ${location.address}<br>
+            <em>${location.fooditems}</em>
+          </div>
+        `;
+  
+        // Configurar el popup
         this.popup.setOptions({
-          content: `
-            <div>
-              <strong>${location.applicant}</strong><br>
-              ${location.address}<br>
-              <em>${location.fooditems}</em>
-            </div>
-          `,
-          position: [location.longitude, location.latitude]
+          content: popupContent,
+          position: [location.longitude, location.latitude],
+          pixelOffset: [0, -20], // Ajustar posición para que no quede centrado exactamente en el marcador
+          closeButton: true, // Mostrar botón de cierre
+          closeOnMouseOut: false // El popup no se cierra automáticamente al salir del mouse
         });
+  
+        // Abrir el popup
         this.popup.open(this.map);
       });
-
+  
+      // Configurar cierre diferido al salir del mouse
       this.map.events.add('mouseout', marker, () => {
         isMouseOver = false;
         closePopupTimeout = setTimeout(() => {
