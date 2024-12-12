@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, OnInit, SimpleChanges } from '@angular/core';
 import * as atlas from 'azure-maps-control';
 import { FoodTruckShort } from '../../interfaces/food-truck-short';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-azure-map',
@@ -41,7 +42,7 @@ export class AzureMapComponent implements OnInit {
       language: 'en-US',
       authOptions: {
         authType: atlas.AuthenticationType.subscriptionKey,
-        subscriptionKey: '6CfUS5E5IW13lHWVaBpp7uvuRhlFRkbP4T4zBOLagkzGbNAhGqYyJQQJ99ALACYeBjFqnTLfAAAgAZMP3jN7'
+        subscriptionKey: environment.azureMapsKey
       }
     });
 

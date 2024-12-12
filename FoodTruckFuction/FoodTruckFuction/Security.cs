@@ -31,7 +31,7 @@ public class Security
             }
 
             // Validar credenciales (por simplicidad, usamos un check estático)
-            if (credentials.Username == "admin" && credentials.Password == "password")
+            if (credentials.Username == Environment.GetEnvironmentVariable("USER") && credentials.Password == Environment.GetEnvironmentVariable("PASS"))
             {
                 // Generar el token
                 var token = JwtHelper.GenerateToken(credentials.Username, "Admin");

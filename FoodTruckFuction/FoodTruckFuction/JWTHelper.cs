@@ -6,11 +6,12 @@ using System.Text;
 
 public static class JwtHelper
 {
-    private const string SecretKey = "TuLlaveSuperSecretaDeMinimo32Caracteres"; // Cambia esta clave y guárdala en Configuración Segura
-    private static readonly byte[] SecretKeyBytes = Encoding.UTF8.GetBytes(SecretKey);
+
 
     public static string GenerateToken(string username, string role, int expireMinutes = 30)
     {
+        string SecretKey = Environment.GetEnvironmentVariable("SECRET_KEY");
+        byte[] SecretKeyBytes = Encoding.UTF8.GetBytes(SecretKey);
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, username),
