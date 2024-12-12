@@ -3,14 +3,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { FoodTruck } from '../interfaces/food-truck';
+import { not } from 'rxjs/internal/util/not';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FoodTruckService {
 
-  private apiUrl = 'http://localhost:7071/foodtrucks'; // URL de tu Azure Function local
-  private tokenUrl = 'http://localhost:7071/token'; // URL del endpoint para obtener el token
+  private apiUrl = 'http://localhost:7071/'; // URL de tu Azure Function local
 
   constructor(private http: HttpClient) { }
 
@@ -20,7 +20,7 @@ export class FoodTruckService {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*'
     });
-    return this.http.post<{ token: string }>(this.tokenUrl, credentials, { headers }).pipe(
+    return this.http.post<{ token: string }>(this.apiUrl + "token", credentials, { headers }).pipe(
       map(response => response.token)
     );
   }
@@ -35,13 +35,16 @@ export class FoodTruckService {
         });
   
         // Transformar los datos para devolver solo coordenadas
-        return this.http.get<FoodTruck[]>(this.apiUrl, { headers }).pipe(
-          map(foodTrucks => 
-            foodTrucks.map(ft => ({
-              latitude: parseFloat(ft.location.latitude),
-              longitude: parseFloat(ft.location.longitude)
-            }))
-          )
+        return this.http.get<FoodTruck[]>(this.apiUrl + "foodtrucks", { headers }).pipe(
+          map(foodTrucks => {
+            if (foodTrucks) {
+              return foodTrucks.map(ft => ({
+                latitude: parseFloat(ft.location.latitude),
+                longitude: parseFloat(ft.location.longitude)
+              }))
+            }
+            return [];
+          })
         );
       }),
       catchError(error => {

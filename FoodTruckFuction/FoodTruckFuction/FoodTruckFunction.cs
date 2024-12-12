@@ -41,7 +41,7 @@ namespace FoodTruckFunction
 
 
         [Function("GetFoodTrucks")]
-        public async Task<HttpResponseData> Run(
+        public async Task<HttpResponseData> FoodTrucks(
         [HttpTrigger(AuthorizationLevel.Function, "get", Route = "foodtrucks")] HttpRequestData req)
         {
             // Extraer el token del encabezado Authorization
