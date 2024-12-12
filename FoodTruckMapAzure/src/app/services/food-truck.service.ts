@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { FoodTruck } from '../interfaces/food-truck';
 import { not } from 'rxjs/internal/util/not';
+import { FoodTruckShort } from '../interfaces/food-truck-short';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,7 @@ export class FoodTruckService {
     );
   }
 
-  getFoodTrucks(): Observable<{ latitude: number; longitude: number }[]> {
+  getFoodTrucks(): Observable<FoodTruckShort[]> {
     return this.getToken().pipe(
       switchMap(token => {
         const headers = new HttpHeaders({
@@ -34,14 +35,16 @@ export class FoodTruckService {
           'Access-Control-Allow-Origin': '*'
         });
   
-        // Transformar los datos para devolver solo coordenadas
         return this.http.get<FoodTruck[]>(this.apiUrl + "foodtrucks", { headers }).pipe(
           map(foodTrucks => {
             if (foodTrucks) {
               return foodTrucks.map(ft => ({
                 latitude: parseFloat(ft.location.latitude),
-                longitude: parseFloat(ft.location.longitude)
-              }))
+                longitude: parseFloat(ft.location.longitude),
+                applicant: ft.applicant,
+                address: ft.address,
+                fooditems: ft.fooditems
+              }));
             }
             return [];
           })
@@ -53,5 +56,6 @@ export class FoodTruckService {
       })
     );
   }
+  
   
 }

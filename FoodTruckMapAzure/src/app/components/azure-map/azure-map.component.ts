@@ -2,6 +2,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import * as atlas from 'azure-maps-control';
+import { FoodTruckShort } from '../../interfaces/food-truck-short';
 
 @Component({
   selector: 'app-azure-map',
@@ -10,10 +11,11 @@ import * as atlas from 'azure-maps-control';
   styleUrls: ['./azure-map.component.css']
 })
 export class AzureMapComponent implements OnInit {
-  @Input() foodTruckLocations: { latitude: number; longitude: number }[] = [];
-  @Output() boundsChanged = new EventEmitter<{ minLatitude: number; maxLatitude: number; minLongitude: number; maxLongitude: number, centerLatitude: number, centerLongitude: number }>();
+  @Input() foodTruckLocations: FoodTruckShort[] = [];
+  @Output() boundsChanged = new EventEmitter<{ minLatitude: number; maxLatitude: number; minLongitude: number; maxLongitude: number; centerLatitude: number; centerLongitude: number }>();
 
   private map!: atlas.Map;
+  private popup = new atlas.Popup();
 
   ngOnInit(): void {
     this.initializeMap();
@@ -31,15 +33,16 @@ export class AzureMapComponent implements OnInit {
     });
 
     this.map.events.add('moveend', () => {
-      const bounds = this.map.getCamera().bounds as [number, number, number, number]; // BoundingBox [west, south, east, north]
-      const center = this.map.getCamera().center as [number, number]; // Centro actual del mapa
+      const bounds = this.map.getCamera().bounds as [number, number, number, number];
+      const center = this.map.getCamera().center as [number, number];
+
       this.boundsChanged.emit({
-        minLongitude: bounds[0], // west
-        minLatitude: bounds[1], // south
-        maxLongitude: bounds[2], // east
-        maxLatitude: bounds[3],  // north
-        centerLatitude: center[1], // latitud del centro
-        centerLongitude: center[0] // longitud del centro
+        minLongitude: bounds[0],
+        minLatitude: bounds[1],
+        maxLongitude: bounds[2],
+        maxLatitude: bounds[3],
+        centerLatitude: center[1],
+        centerLongitude: center[0]
       });
     });
   }
@@ -47,13 +50,48 @@ export class AzureMapComponent implements OnInit {
   ngOnChanges(): void {
     if (this.map) {
       this.map.markers.clear();
+  
       this.foodTruckLocations.forEach(location => {
         const marker = new atlas.HtmlMarker({
           position: [location.longitude, location.latitude],
-          color: 'blue'
+          color: 'red'
         });
+  
         this.map.markers.add(marker);
+  
+        // Crear un flag para evitar cierres intermitentes
+        let isMouseOver = false;
+        let closePopupTimeout: any;
+  
+        // Mostrar popup al pasar el mouse
+        this.map.events.add('mouseover', marker, () => {
+          clearTimeout(closePopupTimeout);
+          isMouseOver = true;
+  
+          this.popup.setOptions({
+            content: `
+              <div>
+                <strong>${location.applicant}</strong><br>
+                ${location.address}<br>
+                <em>${location.fooditems}</em>
+              </div>
+            `,
+            position: [location.longitude, location.latitude]
+          });
+          this.popup.open(this.map);
+        });
+  
+        // Configurar cierre diferido del popup al salir
+        this.map.events.add('mouseout', marker, () => {
+          isMouseOver = false;
+          closePopupTimeout = setTimeout(() => {
+            if (!isMouseOver) {
+              this.popup.close();
+            }
+          }, 200); // Esperar un tiempo antes de cerrar
+        });
       });
     }
   }
+  
 }

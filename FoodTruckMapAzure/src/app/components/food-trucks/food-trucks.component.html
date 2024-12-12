@@ -1,4 +1,25 @@
-<app-azure-map
-  [foodTruckLocations]="visibleFoodTruckLocations"
-  (boundsChanged)="onBoundsChanged($event)"
-></app-azure-map>
+<div class="food-trucks-container">
+  <div *ngIf="loading" class="loader-overlay">
+    <div class="spinner"></div>
+  </div>
+  <div class="map-container">
+    <app-azure-map
+      [foodTruckLocations]="visibleFoodTruckLocations"
+      (boundsChanged)="onBoundsChanged($event)"
+    ></app-azure-map>
+  </div>
+  <div class="list-container">
+    <div class="list-title">
+      <h1>Food Trucks</h1>
+      <p>Explore the best food trucks in the area</p>
+    </div>
+    <ul>
+      <li *ngFor="let foodTruck of visibleFoodTruckLocations">
+        <div class="food-truck-card">
+          <strong class="food-truck-name">{{ foodTruck.applicant }}</strong>
+          <p class="food-truck-address">{{ foodTruck.address }}</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

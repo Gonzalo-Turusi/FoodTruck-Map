@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FoodTruckService } from '../../services/food-truck.service';
 import { AzureMapComponent } from '../azure-map/azure-map.component';
 import { CommonModule } from '@angular/common';
+import { FoodTruckShort } from '../../interfaces/food-truck-short';
 
 @Component({
   selector: 'app-food-trucks',
@@ -10,17 +11,19 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./food-trucks.component.css']
 })
 export class FoodTrucksComponent implements OnInit {
-  allFoodTruckLocations: { latitude: number; longitude: number }[] = [];
-  visibleFoodTruckLocations: { latitude: number; longitude: number }[] = [];
-  showReloadButton = false;
+  allFoodTruckLocations: FoodTruckShort[] = [];
+  visibleFoodTruckLocations: FoodTruckShort[] = [];
+  loading = false;
 
   constructor(private foodTruckService: FoodTruckService) {}
 
   ngOnInit(): void {
+    this.loading = true;
     // Cargar todos los food trucks al inicio
     this.foodTruckService.getFoodTrucks().subscribe({
       next: locations => {
         this.allFoodTruckLocations = locations;
+        this.loading = false;
 
         const initialBounds = {
           minLatitude: 37.5,
@@ -33,7 +36,10 @@ export class FoodTrucksComponent implements OnInit {
   
         this.onBoundsChanged(initialBounds);
       },
-      error: err => console.error('Failed to load food trucks', err)
+      error: err => {
+        console.error('Failed to load food trucks', err)
+        this.loading = false;
+      }
     });
   }
 
