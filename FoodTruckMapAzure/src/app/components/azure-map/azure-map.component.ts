@@ -1,6 +1,6 @@
 // src/app/components/azure-map/azure-map.component.ts
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, SimpleChanges } from '@angular/core';
 import * as atlas from 'azure-maps-control';
 import { FoodTruckShort } from '../../interfaces/food-truck-short';
 
@@ -12,6 +12,7 @@ import { FoodTruckShort } from '../../interfaces/food-truck-short';
 })
 export class AzureMapComponent implements OnInit {
   @Input() foodTruckLocations: FoodTruckShort[] = [];
+  @Input() focusLocation!: { latitude: number; longitude: number };
   @Output() boundsChanged = new EventEmitter<{ minLatitude: number; maxLatitude: number; minLongitude: number; maxLongitude: number; centerLatitude: number; centerLongitude: number }>();
 
   private map!: atlas.Map;
@@ -19,6 +20,18 @@ export class AzureMapComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeMap();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.map) {
+      if (changes['foodTruckLocations']) {
+        this.updateMarkers();
+      }
+
+      if (changes['focusLocation'] && this.focusLocation) {
+        this.setMapFocus(this.focusLocation.latitude, this.focusLocation.longitude);
+      }
+    }
   }
 
   private initializeMap(): void {
@@ -47,51 +60,53 @@ export class AzureMapComponent implements OnInit {
     });
   }
 
-  ngOnChanges(): void {
-    if (this.map) {
-      this.map.markers.clear();
-  
-      this.foodTruckLocations.forEach(location => {
-        const marker = new atlas.HtmlMarker({
-          position: [location.longitude, location.latitude],
-          color: 'red'
-        });
-  
-        this.map.markers.add(marker);
-  
-        // Crear un flag para evitar cierres intermitentes
-        let isMouseOver = false;
-        let closePopupTimeout: any;
-  
-        // Mostrar popup al pasar el mouse
-        this.map.events.add('mouseover', marker, () => {
-          clearTimeout(closePopupTimeout);
-          isMouseOver = true;
-  
-          this.popup.setOptions({
-            content: `
-              <div>
-                <strong>${location.applicant}</strong><br>
-                ${location.address}<br>
-                <em>${location.fooditems}</em>
-              </div>
-            `,
-            position: [location.longitude, location.latitude]
-          });
-          this.popup.open(this.map);
-        });
-  
-        // Configurar cierre diferido del popup al salir
-        this.map.events.add('mouseout', marker, () => {
-          isMouseOver = false;
-          closePopupTimeout = setTimeout(() => {
-            if (!isMouseOver) {
-              this.popup.close();
-            }
-          }, 200); // Esperar un tiempo antes de cerrar
-        });
+  private updateMarkers(): void {
+    this.map.markers.clear();
+
+    this.foodTruckLocations.forEach(location => {
+      const marker = new atlas.HtmlMarker({
+        position: [location.longitude, location.latitude],
+        color: 'red'
       });
-    }
+
+      this.map.markers.add(marker);
+
+      let isMouseOver = false;
+      let closePopupTimeout: any;
+
+      this.map.events.add('mouseover', marker, () => {
+        clearTimeout(closePopupTimeout);
+        isMouseOver = true;
+
+        this.popup.setOptions({
+          content: `
+            <div>
+              <strong>${location.applicant}</strong><br>
+              ${location.address}<br>
+              <em>${location.fooditems}</em>
+            </div>
+          `,
+          position: [location.longitude, location.latitude]
+        });
+        this.popup.open(this.map);
+      });
+
+      this.map.events.add('mouseout', marker, () => {
+        isMouseOver = false;
+        closePopupTimeout = setTimeout(() => {
+          if (!isMouseOver) {
+            this.popup.close();
+          }
+        }, 200);
+      });
+    });
+  }
+
+  private setMapFocus(latitude: number, longitude: number): void {
+    this.map.setCamera({
+      center: [longitude, latitude],
+      zoom: 16 // Zoom más cercano para enfocar la ubicación
+    });
   }
   
 }

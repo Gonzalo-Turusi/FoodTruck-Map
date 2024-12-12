@@ -5,6 +5,7 @@
   <div class="map-container">
     <app-azure-map
       [foodTruckLocations]="visibleFoodTruckLocations"
+      [focusLocation]="focusLocation"
       (boundsChanged)="onBoundsChanged($event)"
     ></app-azure-map>
   </div>
@@ -14,12 +15,15 @@
       <p>Explore the best food trucks in the area</p>
     </div>
     <ul>
-      <li *ngFor="let foodTruck of visibleFoodTruckLocations">
+      <li *ngFor="let foodTruck of visibleFoodTruckLocations" (click)="focusOnLocation(foodTruck)">
         <div class="food-truck-card">
           <strong class="food-truck-name">{{ foodTruck.applicant }}</strong>
           <p class="food-truck-address">{{ foodTruck.address }}</p>
+          <div class="card-action">
+            <span class="action-icon">📍</span> Go to location
+          </div>
         </div>
       </li>
-    </ul>
+    </ul>    
   </div>
 </div>

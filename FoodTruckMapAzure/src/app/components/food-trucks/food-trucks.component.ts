@@ -13,6 +13,7 @@ import { FoodTruckShort } from '../../interfaces/food-truck-short';
 export class FoodTrucksComponent implements OnInit {
   allFoodTruckLocations: FoodTruckShort[] = [];
   visibleFoodTruckLocations: FoodTruckShort[] = [];
+  focusLocation!: { latitude: number; longitude: number };
   loading = false;
 
   constructor(private foodTruckService: FoodTruckService) {}
@@ -43,6 +44,13 @@ export class FoodTrucksComponent implements OnInit {
     });
   }
 
+  focusOnLocation(foodTruck: FoodTruckShort): void {
+    this.focusLocation = {
+      latitude: foodTruck.latitude,
+      longitude: foodTruck.longitude
+    };
+  }
+  
   onBoundsChanged(bounds: { 
     minLatitude: number; 
     maxLatitude: number; 

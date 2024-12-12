@@ -53,29 +53,49 @@
   font-style: italic;
 }
 
+/* Tarjetas */
 .food-truck-card {
   border: 1px solid #ddd;
   padding: 1rem;
   border-radius: 8px;
   background-color: #fff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  cursor: pointer; /* Cambiar el cursor al pasar el mouse */
 }
 
 .food-truck-card:hover {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: #f0f8ff; /* Cambiar el color de fondo */
 }
 
+/* Nombre del food truck */
 .food-truck-name {
   font-size: 1.2rem;
   color: #0078d4;
   margin-bottom: 0.5rem;
 }
 
+/* Dirección */
 .food-truck-address {
   color: #555;
   font-size: 1rem;
 }
+
+/* Acción */
+.card-action {
+  margin-top: 0.5rem;
+  color: #0078d4;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+}
+
+.action-icon {
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+}
+
 
 /* Loader styles */
 .loader-overlay {
