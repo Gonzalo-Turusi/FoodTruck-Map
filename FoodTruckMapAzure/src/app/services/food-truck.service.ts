@@ -3,15 +3,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { FoodTruck } from '../interfaces/food-truck';
-import { not } from 'rxjs/internal/util/not';
 import { FoodTruckShort } from '../interfaces/food-truck-short';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FoodTruckService {
 
-  private apiUrl = 'http://localhost:7071/'; // URL de tu Azure Function local
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 

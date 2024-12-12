@@ -35,6 +35,8 @@ public static class JwtHelper
 
     public static ClaimsPrincipal ValidateToken(string token)
     {
+        string SecretKey = Environment.GetEnvironmentVariable("SECRET_KEY");
+        byte[] SecretKeyBytes = Encoding.UTF8.GetBytes(SecretKey);
         var tokenHandler = new JwtSecurityTokenHandler();
         var validationParameters = new TokenValidationParameters
         {
