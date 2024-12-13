@@ -1,5 +1,5 @@
 window.env = {
-    azureMapsKey: '',
+    azureMapKey: '',
     apiUrlToken: '',
     apiUrlFoodtrucks: ''
 };

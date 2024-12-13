@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  azureMapsKey: window["env"]["azureMapsKey"] || '',
-  apiUrlToken: window["env"]["apiUrlToken"] || '',
-  apiUrlFoodtrucks: window["env"]["apiUrlFoodtrucks"] || ''
+  apiUrlToken: (window["env"] && window["env"]["apiUrlToken"]) || '',
+  apiUrlFoodtrucks: (window["env"] && window["env"]["apiUrlFoodtrucks"]) || '',
+  azureMapKey: (window["env"] && window["env"]["azureMapKey"]) || ''
 };

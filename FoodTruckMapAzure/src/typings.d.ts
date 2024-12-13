@@ -1,6 +1,6 @@
 interface Window {
     env: {
-        azureMapsKey: string;
+        azureMapKey: string;
         apiUrlToken: string;
         apiUrlFoodtrucks: string;
     };
