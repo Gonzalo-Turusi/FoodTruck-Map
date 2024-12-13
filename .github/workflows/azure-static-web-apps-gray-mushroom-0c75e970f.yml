@@ -36,7 +36,7 @@ jobs:
         run: |
           cd FoodTruckMapAzure
           npm install
-          
+
       - name: Set environment variables for Angular
         run: |
           echo "window.env = {" > ./FoodTruckMapAzure/src/assets/env.js
@@ -49,7 +49,6 @@ jobs:
         run: |
           cd FoodTruckMapAzure
           npm run build -- --configuration production
-                - name: Set environment variables for Angular
        
       - name: Build And Deploy
         id: builddeploy
