@@ -42,7 +42,7 @@ export class AzureMapComponent implements OnInit {
       language: 'en-US',
       authOptions: {
         authType: atlas.AuthenticationType.subscriptionKey,
-        subscriptionKey: environment.azureMapsKey
+        subscriptionKey: environment.azureMapKey
       }
     });
 
