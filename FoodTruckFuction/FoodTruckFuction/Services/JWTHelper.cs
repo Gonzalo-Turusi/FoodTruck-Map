@@ -1,14 +1,12 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using FoodTruckFuction.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-public static class JwtHelper
-{
-
-
-    public static string GenerateToken(string username, string role, int expireMinutes = 30)
+public class JwtHelper : IJwtHelper
+{ 
+    public string GenerateToken(string username, string role, int expireMinutes = 30)
     {
         string SecretKey = Environment.GetEnvironmentVariable("SECRET_KEY");
         byte[] SecretKeyBytes = Encoding.UTF8.GetBytes(SecretKey);
@@ -33,7 +31,7 @@ public static class JwtHelper
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public static ClaimsPrincipal ValidateToken(string token)
+    public ClaimsPrincipal ValidateToken(string token)
     {
         string SecretKey = Environment.GetEnvironmentVariable("SECRET_KEY");
         byte[] SecretKeyBytes = Encoding.UTF8.GetBytes(SecretKey);

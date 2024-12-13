@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json;
+using FoodTruckFuction.Interfaces;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -7,10 +8,11 @@ using Microsoft.Extensions.Logging;
 public class Security
 {
     private readonly ILogger _logger;
-
-    public Security(ILoggerFactory loggerFactory)
+    private readonly IJwtHelper _jwtHelper;
+    public Security(ILoggerFactory loggerFactory, IJwtHelper jwtHelper)
     {
         _logger = loggerFactory.CreateLogger<Security>();
+        _jwtHelper = jwtHelper;
     }
 
     [Function("GenerateToken")]
@@ -34,7 +36,7 @@ public class Security
             if (credentials.Username == Environment.GetEnvironmentVariable("USER") && credentials.Password == Environment.GetEnvironmentVariable("PASS"))
             {
                 // Generar el token
-                var token = JwtHelper.GenerateToken(credentials.Username, "Admin");
+                var token = _jwtHelper.GenerateToken(credentials.Username, "Admin");
 
                 // Devolver el token
                 var response = req.CreateResponse(HttpStatusCode.OK);
