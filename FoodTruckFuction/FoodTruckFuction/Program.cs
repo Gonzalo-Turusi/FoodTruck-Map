@@ -12,6 +12,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IJwtHelper, JwtHelper>();
 builder.Services.AddTransient<IFoodTruckRepository, FoodTruckRepository>();
 builder.Services.AddTransient<IFoodTruckService, FoodTruckService>();
+builder.Services.AddTransient<IEnvironmentService, EnvironmentService>();
 
 builder.ConfigureFunctionsWebApplication();
 builder.Build().Run();

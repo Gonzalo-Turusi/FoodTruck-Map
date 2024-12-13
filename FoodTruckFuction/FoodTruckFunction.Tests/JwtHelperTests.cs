@@ -13,11 +13,9 @@ namespace FoodTruckFunction.Tests
 
         public JwtHelperTests()
         {
-            // Mock para IEnvironmentService
             _mockEnvironmentService = new Mock<IEnvironmentService>();
             _mockEnvironmentService.Setup(e => e.GetVariable("SECRET_KEY")).Returns("MySuperMegaSecretKeyWithMoreThan32Characters");
 
-            // Instanciar JwtHelper con el mock
             _jwtHelper = new JwtHelper(_mockEnvironmentService.Object);
         }
 
