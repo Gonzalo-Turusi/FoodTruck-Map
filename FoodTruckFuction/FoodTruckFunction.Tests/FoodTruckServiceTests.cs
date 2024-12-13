@@ -13,32 +13,35 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-public class FoodTruckServiceTests
+namespace FoodTruckFunction.Tests
 {
-    private readonly Mock<IFoodTruckRepository> _mockRepository;
-    private readonly Mock<ILogger<FoodTruckService>> _mockLogger;
-    private readonly FoodTruckService _service;
-
-    public FoodTruckServiceTests()
+    public class FoodTruckServiceTests
     {
-        _mockRepository = new Mock<IFoodTruckRepository>();
-        _mockLogger = new Mock<ILogger<FoodTruckService>>();
+        private readonly Mock<IFoodTruckRepository> _mockRepository;
+        private readonly Mock<ILogger<FoodTruckService>> _mockLogger;
+        private readonly FoodTruckService _service;
 
-        _service = new FoodTruckService(_mockRepository.Object, _mockLogger.Object);
+        public FoodTruckServiceTests()
+        {
+            _mockRepository = new Mock<IFoodTruckRepository>();
+            _mockLogger = new Mock<ILogger<FoodTruckService>>();
+
+            _service = new FoodTruckService(_mockRepository.Object, _mockLogger.Object);
+        }
+
+        [Fact]
+        public async Task GetFoodTrucksForUser_ReturnsFoodTrucks()
+        {
+            // Arrange
+            _mockRepository.Setup(r => r.FetchFoodTrucksAsync()).ReturnsAsync("[{\"name\":\"Truck 1\"}]");
+
+            // Act
+            var result = await _service.GetFoodTrucks();
+
+            // Assert
+            Assert.Equal("[{\"name\":\"Truck 1\"}]", result);
+            _mockRepository.Verify(r => r.FetchFoodTrucksAsync(), Times.Once);
+        }
+
     }
-
-    [Fact]
-    public async Task GetFoodTrucksForUser_ReturnsFoodTrucks()
-    {
-        // Arrange
-        _mockRepository.Setup(r => r.FetchFoodTrucksAsync()).ReturnsAsync("[{\"name\":\"Truck 1\"}]");
-
-        // Act
-        var result = await _service.GetFoodTrucks();
-
-        // Assert
-        Assert.Equal("[{\"name\":\"Truck 1\"}]", result);
-        _mockRepository.Verify(r => r.FetchFoodTrucksAsync(), Times.Once);
-    }
-
 }
