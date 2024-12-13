@@ -1,0 +1,17 @@
+{
+    "routes": [
+      {
+        "route": "/api/*",
+        "allowedRoles": ["anonymous"]
+      },
+      {
+        "route": "/token",
+        "rewrite": "https://foodtruckfunctions.azurewebsites.net/token?"
+      },
+      {
+        "route": "/foodtrucks",
+        "rewrite": "https://foodtruckfunctions.azurewebsites.net/foodtrucks?code=JimsvjKVJ1hJp-xAoQ_Az6sLNkwV1x165DBjuHcbdsBrAzFuW0RJnQ%3D%3D"
+      }
+    ]
+  }
+  
