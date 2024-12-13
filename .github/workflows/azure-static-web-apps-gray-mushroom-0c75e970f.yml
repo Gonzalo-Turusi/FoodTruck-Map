@@ -40,6 +40,16 @@ jobs:
         run: |
           cd FoodTruckMapAzure
           npm run build -- --configuration production
+                - name: Set environment variables for Angular
+       
+      - name: Set environment variables for Angular
+        run: |
+          echo "window.env = {" > ./FoodTruckMapAzure/src/assets/env.js
+          echo "  azureMapKey: '${{ secrets.AZURE_MAP_KEY }}'," >> ./FoodTruckMapAzure/src/assets/env.js
+          echo "  apiUrlToken: '${{ secrets.API_URL_TOKEN }}'," >> ./FoodTruckMapAzure/src/assets/env.js
+          echo "  apiUrlFoodtrucks: '${{ secrets.API_URL_FOODTRUCKS }}'" >> ./FoodTruckMapAzure/src/assets/env.js
+          echo "};" >> ./FoodTruckMapAzure/src/assets/env.js
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -53,14 +63,6 @@ jobs:
           output_location: "dist/food-truck-map-azure/browser/" # Built app content directory - optional
           github_id_token: ${{ steps.idtoken.outputs.result }}
           ###### End of Repository/Build Configurations ######
-
-      - name: Set environment variables for Angular
-        run: |
-          echo "window.env = {" > ./FoodTruckMapAzure/src/assets/env.js
-          echo "  azureMapKey: '${{ secrets.AZURE_MAP_KEY }}'," >> ./FoodTruckMapAzure/src/assets/env.js
-          echo "  apiUrlToken: '${{ secrets.API_URL_TOKEN }}'," >> ./FoodTruckMapAzure/src/assets/env.js
-          echo "  apiUrlFoodtrucks: '${{ secrets.API_URL_FOODTRUCKS }}'" >> ./FoodTruckMapAzure/src/assets/env.js
-          echo "};" >> ./FoodTruckMapAzure/src/assets/env.js
           
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
