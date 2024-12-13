@@ -32,6 +32,10 @@ jobs:
                const coredemo = require('@actions/core')
                return await coredemo.getIDToken()
            result-encoding: string
+      - name: Install dependencies
+        run: |
+          cd FoodTruckMapAzure
+          npm install
       - name: Build Angular App
         run: |
           cd FoodTruckMapAzure
