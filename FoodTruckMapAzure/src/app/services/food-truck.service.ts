@@ -11,7 +11,8 @@ import { environment } from '../../environments/environment';
 })
 export class FoodTruckService {
 
-  private apiUrl = environment.apiUrl;
+  private apiUrlToken = environment.apiUrlToken;
+  private apiUrlFoodtrucks = environment.apiUrlFoodtrucks;
 
   constructor(private http: HttpClient) { }
 
@@ -21,7 +22,7 @@ export class FoodTruckService {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*'
     });
-    return this.http.post<{ token: string }>(this.apiUrl + "token", credentials, { headers }).pipe(
+    return this.http.post<{ token: string }>(this.apiUrlToken, credentials, { headers }).pipe(
       map(response => response.token)
     );
   }
@@ -35,7 +36,7 @@ export class FoodTruckService {
           'Access-Control-Allow-Origin': '*'
         });
   
-        return this.http.get<FoodTruck[]>(this.apiUrl + "foodtrucks", { headers }).pipe(
+        return this.http.get<FoodTruck[]>(this.apiUrlFoodtrucks, { headers }).pipe(
           map(foodTrucks => {
             if (foodTrucks) {
               return foodTrucks.map(ft => ({
