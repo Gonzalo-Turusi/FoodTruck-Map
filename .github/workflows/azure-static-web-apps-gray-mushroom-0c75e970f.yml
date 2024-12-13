@@ -36,12 +36,7 @@ jobs:
         run: |
           cd FoodTruckMapAzure
           npm install
-      - name: Build Angular App
-        run: |
-          cd FoodTruckMapAzure
-          npm run build -- --configuration production
-                - name: Set environment variables for Angular
-       
+          
       - name: Set environment variables for Angular
         run: |
           echo "window.env = {" > ./FoodTruckMapAzure/src/assets/env.js
@@ -50,6 +45,12 @@ jobs:
           echo "  apiUrlFoodtrucks: '${{ secrets.API_URL_FOODTRUCKS }}'" >> ./FoodTruckMapAzure/src/assets/env.js
           echo "};" >> ./FoodTruckMapAzure/src/assets/env.js
 
+      - name: Build Angular App
+        run: |
+          cd FoodTruckMapAzure
+          npm run build -- --configuration production
+                - name: Set environment variables for Angular
+       
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
