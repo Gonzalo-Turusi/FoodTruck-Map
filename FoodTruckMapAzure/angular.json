@@ -23,8 +23,7 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public",
-                "output": "src/staticwebapp.config.json"
+                "input": "public"
               }
             ],
             "styles": [
