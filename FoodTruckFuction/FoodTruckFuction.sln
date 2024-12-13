@@ -5,6 +5,8 @@ VisualStudioVersion = 17.12.35506.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodTruckFuction", "FoodTruckFuction\FoodTruckFuction.csproj", "{4E9A3F90-EFE7-4065-A6E2-B2C8193BFBB5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodTruckFunction.Tests", "FoodTruckFunction.Tests\FoodTruckFunction.Tests.csproj", "{78AB281B-AEFA-409D-A719-0D41FF89B7E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{4E9A3F90-EFE7-4065-A6E2-B2C8193BFBB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E9A3F90-EFE7-4065-A6E2-B2C8193BFBB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E9A3F90-EFE7-4065-A6E2-B2C8193BFBB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78AB281B-AEFA-409D-A719-0D41FF89B7E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78AB281B-AEFA-409D-A719-0D41FF89B7E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78AB281B-AEFA-409D-A719-0D41FF89B7E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78AB281B-AEFA-409D-A719-0D41FF89B7E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
